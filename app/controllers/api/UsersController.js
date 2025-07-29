@@ -58,36 +58,41 @@ function UsersController() {
 
 	// Auth:
 	const _register = async (req, res) => {
-		try {
-			// Extract request input:
-			const email = req.body?.email
-			const password = req.body?.password
-			const firstName = req.body?.firstName
-			const lastName = req.body?.lastName
+	try {
+		const email = req.body?.email;
+		const password = req.body?.password;
+		const firstName = req.body?.firstName;
+		const lastName = req.body?.lastName;
+		const role = req.body?.role; // 👈
 
-			// Create new one.
-			const [ tokens, user ] = await usersFacade.register({
-				email,
-				password,
-				firstName,
-				lastName
-			});
+		// Проверка: допустимая ли роль
+		const allowedRoles = ['client', 'coach', 'parent'];
+		if (!allowedRoles.includes(role)) {
+			const err = new Err("Invalid role");
+			err.name = "ValidationError";
+			throw err;
+		}
 
-			// Everything's fine, send response.
-			return createOKResponse({
-				res, 
-				content:{
-					tokens,
-					// Convert user to JSON, to clear sensitive data (like password)
-					user:user.toJSON()
-				}
-			});
-		}
-		catch(error) {
-			console.error("UsersController._create error: ", error);
-			return _processError(error, req, res);
-		}
+		const [tokens, user] = await usersFacade.register({
+			email,
+			password,
+			firstName,
+			lastName,
+			role // 👈 передаём в фасад
+		});
+
+		return createOKResponse({
+			res,
+			content: {
+				tokens,
+				user: user.toJSON()
+			}
+		});
+	} catch (error) {
+		console.error("UsersController._register error: ", error);
+		return _processError(error, req, res);
 	}
+}
 
 	const _login = async (req, res) => {
 		try {
