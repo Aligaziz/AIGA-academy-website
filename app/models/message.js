@@ -21,3 +21,7 @@ module.exports = (sequelize) => {
 
   return Message;
 };
+room: {
+  type: DataTypes.STRING,
+  allowNull: true, // null → 1-на-1 чат, строка → групповой чат
+}
