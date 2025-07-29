@@ -1,6 +1,7 @@
 // Модель сообщений и пользователей( ну блиин)
 const { Message, User } = require('#models');
 const { Err } = require('#factories/errors');
+const { Op } = require('sequelize');
 const { createOKResponse, createErrorResponse } = require('#factories/responses/api');
 
 module.exports = ChatController;
