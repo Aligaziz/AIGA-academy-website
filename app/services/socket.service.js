@@ -44,4 +44,20 @@ function initSocket(server) {
   });
 }
 
-module.exports = { initSocket };
+socket.on('joinRoom', (room) => {
+  socket.join(room);
+});
+
+socket.on('groupMessage', async ({ room, text }) => {
+  const fromUserId = socket.user.id;
+
+  const message = await Message.create({
+    fromUserId,
+    text,
+    room, // ← это групповой чат
+    toUserId: null,
+  });
+
+  // Отправка сообщения всем в комнате(мне тоже)
+  io.to(room).emit('groupMessage', message);
+});
