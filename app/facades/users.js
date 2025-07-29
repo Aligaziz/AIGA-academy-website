@@ -23,12 +23,13 @@ module.exports = {
 }
 
 // Auth:
-async function _register({ email, password }) {
+async function _register({ email, password, role }) {
 	try{
 		// Try to create new user.
 		const user = await User.create({
 			email,
-			password
+			password,
+			role
 		});
 
 		// Issue new access and refresh JWT.
