@@ -29,6 +29,8 @@ async function _register({ email, password, role }) {
 		const user = await User.create({
 			email,
 			password,
+			firstname,
+			lastname,
 			role
 		});
 
