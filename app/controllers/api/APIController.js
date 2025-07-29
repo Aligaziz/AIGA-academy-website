@@ -18,7 +18,7 @@ function APIController() {
 		switch(error.name) {
 			case('TypeError'):
 				errorMessage = 'Type error. Check your console for details.';
-				statusCode = 402;
+				statusCode = 400;
 				break;
 
 			// Perform your custom processing here...
