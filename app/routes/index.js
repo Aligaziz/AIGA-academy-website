@@ -10,6 +10,8 @@ const webRoutes = require('#routes/web');
 // Policies:
 const accessTokenMiddleware = require('#policies/accessToken.policy');
 const refreshTokenMiddleware = require('#policies/refreshToken.policy');
+const chatRoutes = require('./chatRoutes');
+router.use('/chat', chatRoutes);
 // Mapper of routes to controllers.
 const mapRoutes = require('express-routes-mapper');
 
