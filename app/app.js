@@ -13,7 +13,8 @@ const http = require('http');
 const helmet = require('helmet');
 // Cross-origin requests middleware.
 const cors = require('cors');
-
+// для чатика сокет.ио
+const { initSocket } = require('#services/socket.service');
 // Server configuration:
 // ORM.
 const DB = require('#services/db.service');
@@ -111,3 +112,9 @@ function _gracefulShutdown(exit=false) {
 	}, 5*1000);
 }
 // Handle process errors\
+
+initSocket(server);
+
+server.listen(process.env.PORT || 3000, () => {
+  console.log('Server with socket.io running');
+});
