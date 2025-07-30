@@ -13,6 +13,9 @@ const http = require('http');
 const helmet = require('helmet');
 // Cross-origin requests middleware.
 const cors = require('cors');
+// loggin the request
+const morgan = require('morgan');
+
 // для чатика сокет.ио
 const { initSocket } = require('#services/socket.service');
 // Server configuration:
@@ -24,6 +27,9 @@ const serverConfig = require('#configs/server');
 
 // Express application.
 const app = express();
+//loggin
+app.use(morgan('combined'));
+
 // HTTP server (Do not use HTTPS, manage TLS with some proxy, like Nginx).
 const server = http.Server(app);
 // Routes.
@@ -119,6 +125,11 @@ function _gracefulShutdown(exit=false) {
 // Handle process errors\
 
 initSocket(server);
+
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
 
 server.listen(process.env.PORT || 3000, () => {
   console.log('Server with socket.io running');
