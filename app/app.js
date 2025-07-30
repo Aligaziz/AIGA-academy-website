@@ -32,7 +32,12 @@ const routes = require('#routes/');
 
 // Allow cross origin requests
 // (configure to only allow requests from certain origins).
-app.use(cors());
+const corsOptions = {
+  origin: ['https://yourdomain.com'], // указать домен фронтенда
+  methods: ['GET', 'POST'],
+  credentials: true
+};
+app.use(cors(corsOptions));
 
 // Set views path.
 app.set('views', __dirname+'/views');
